@@ -1,7 +1,6 @@
 # emoji-totext
-=========
 
-A small library that adds commas to numbers
+npm package to translate emojis to text
 
 ## Installation
 
@@ -24,6 +23,3 @@ A small library that adds commas to numbers
   - At this point can only perform evaluations of sentences with only one emoji
   - Not all emojis are "readable"
 
-## Contributing
-
-In lieu of a formal style guide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code.
