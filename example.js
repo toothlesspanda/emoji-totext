@@ -1,4 +1,4 @@
-var convertemoji = require('./index');
+var convertemoji = require('emoji-totext');
 
 //var str = "I love you 💙";
 //var str = "I want to eat🍕🍕";

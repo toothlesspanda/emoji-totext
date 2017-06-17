@@ -1,6 +1,6 @@
 {
   "name": "emoji-totext",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "description": "Translates emojis to text",
   "dependencies": {
@@ -10,6 +10,13 @@
     "node-pos": "0.0.4",
     "os": "^0.1.1"
   },
+  "keywords":["emoji", "emoji to text", "translate", "emoji translate"],
   "auhtor": "malayka66 <itm.m92@gmail.com> (https://www.linkedin.com/in/itmm92/)",
+
+  "repository" :
+  { "type" : "git",
+  	"url" : "https://github.com/malayka66/emoji-totext.git"
+  },
+
   "license": "Apache-2.0"
 }
