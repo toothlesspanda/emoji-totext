@@ -7,15 +7,16 @@ npm package to translate emojis to text
   `npm install emoji-totext`
 
 ## Usage
-    var convertemoji = require('emoji-totext');
-    var str = "I want to eat 🍕";
 
+```js
+var convertemoji = require('emoji-totext');
+var str = "I want to eat 🍕";
 
-    convertemoji.toText(str,function(err,sentence){
-	    console.log(sentence);
-    })
-  
-  Output should be: 'I want to eat a slice of pizza`
+convertemoji.toText(str,function(err,sentence){
+	console.log(sentence);
+ })
+ ```
+ Output should be: 'I want to eat a slice of pizza`
 
 
 ## Limitations
