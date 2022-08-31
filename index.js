@@ -29,67 +29,50 @@ exports.toText = function (sentence, callback) {
 			u++;
 		}
 	}
-	
 
+	var stream = fs.createReadStream(__dirname+"/emDict.csv");
+	var newstr = -1;
 
-		var stream = fs.createReadStream(__dirname+"/emDict.csv");
-		var newstr = -1;
+	var csvStream = fastcsv.parse({objectMode:true,headers: true, delimiter:";"})
+		.on("data", function(data){
+			
+			for(var u = 0; u < unicode.length ; u++){
+				var unicodeSmile = unicode[u].replace(/\\\\/g,"\\");
 
-		var csvStream = fastcsv.parse({objectMode:true,headers: true, delimiter:";"})
-		    .on("data", function(data){
-		    	
-		    	for(var u = 0; u < unicode.length ; u++){
-		    		var unicodeSmile = unicode[u].replace(/\\\\/g,"\\");
+				if(data.Bytes == unicodeSmile){
+					
+					str = generatePreposition(str,data.Description,data.Native);
 
-			     	if(data.Bytes == unicodeSmile){
+					var str_split = str.toString().split(data.Native)
+					var index
 
-			     		
-			     		str = generatePreposition(str,data.Description,data.Native);
+					if(str_split[0].length == 0){ //in the begining
+						index = 1
+					}else if(str_split[str_split.length-1].length == 0){ //in the end
+						index = 0
+					}else{ //in the middle
+						index = -1
+					}
 
-
-			     		var str_split = str.toString().split(data.Native)
-			     		var index
-
-			     		if(str_split[0].length == 0){ //in the begining
-			     			index = 1
-			     		}else if(str_split[str_split.length-1].length == 0){ //in the end
-			     			index = 0
-			     		}else{ //in the middle
-			     			index = -1
-			     		}
-
-			     		
-			     		if(index == 0){
-
-				     		newstr = str_split[index]+ preposition + data.Description.toLowerCase(); 
-				     		
-
-			     		}else if(index == 1){
-	     	
-				     		newstr = preposition+data.Description.toLowerCase()+","+str_split[index]; 
-				     		newstr = newstr.toString().charAt(0).toUpperCase() + newstr.toString().slice(1).toLowerCase();
-
-			     		}else{
-
-			     			if(str_split[1].charAt(0) != " ")
-			     				str_split[1]= " "+str_split[1]
-			     			
-				     		newstr = str_split[0] + data.Description.toLowerCase()+str_split[1]; 
-				     		
-			     		}
-				    		
-			     	}       
-			     }
-
-		    })
-		    .on("end", function(){
-	         	callback(null, newstr);
-	   		});
-
-		stream.pipe(csvStream);
-
-	
-	
+					
+					if(index == 0){
+						newstr = str_split[index]+ preposition + data.Description.toLowerCase();
+					}else if(index == 1){	
+						newstr = preposition+data.Description.toLowerCase()+","+str_split[index]; 
+						newstr = newstr.toString().charAt(0).toUpperCase() + newstr.toString().slice(1).toLowerCase();
+					}else{
+						if(str_split[1].charAt(0) != " ")
+							str_split[1]= " "+str_split[1]
+						
+						newstr = str_split[0] + data.Description.toLowerCase()+str_split[1]; 						
+					}					
+				}       
+			}
+		})
+		.on("end", function(){
+			callback(null, newstr);
+		});
+	stream.pipe(csvStream);
 };
 
 function generatePreposition(str,desc,emoji) {
@@ -109,7 +92,6 @@ function generatePreposition(str,desc,emoji) {
 	console.log(str);
 	var tmp_str = str.split(emoji)
 	if(!found){
-
 		if( str.indexOf(emoji) > -1 ){
 			e_index = str.indexOf(emoji);
 			withWord = true;
@@ -118,15 +100,11 @@ function generatePreposition(str,desc,emoji) {
 	}
 
 	if(withWord){
-
-		if(str.charAt(e_index-1) != " "){ //has space before emoji
-				
+		if(str.charAt(e_index-1) != " "){ //has space before emoji				
 			str = tmp_str[0]+" "+emoji + tmp_str[1];
 			console.log(str);
 		}else if(str.charAt(e_index+1) != " "){ //has space after emoji
-
 			str = tmp_str[0]+emoji+ " " + tmp_str[1];
-
 		}
 	}
 
@@ -136,10 +114,8 @@ function generatePreposition(str,desc,emoji) {
 		if(e != 0){
 			if(str[e-2] != "a" )
 				preposition = "a " 
-		}
-	
+		}	
 	}
 
 	return str;
-
 }
